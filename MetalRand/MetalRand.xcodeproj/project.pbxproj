@@ -1,0 +1,171 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXFileReference section */
+		340847122DC61E0F008A2065 /* MetalRand.metallib */ = {isa = PBXFileReference; explicitFileType = "archive.metal-library"; includeInIndex = 0; path = MetalRand.metallib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		340847142DC61E0F008A2065 /* MetalRand */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MetalRand;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXGroup section */
+		3408470B2DC61E0F008A2065 = {
+			isa = PBXGroup;
+			children = (
+				340847142DC61E0F008A2065 /* MetalRand */,
+				340847132DC61E0F008A2065 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		340847132DC61E0F008A2065 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				340847122DC61E0F008A2065 /* MetalRand.metallib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		340847112DC61E0F008A2065 /* MetalRand */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 340847192DC61E0F008A2065 /* Build configuration list for PBXNativeTarget "MetalRand" */;
+			buildPhases = (
+				340847102DC61E0F008A2065 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				340847142DC61E0F008A2065 /* MetalRand */,
+			);
+			name = MetalRand;
+			packageProductDependencies = (
+			);
+			productName = MetalRand;
+			productReference = 340847122DC61E0F008A2065 /* MetalRand.metallib */;
+			productType = "com.apple.product-type.metal-library";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3408470C2DC61E0F008A2065 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					340847112DC61E0F008A2065 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 3408470F2DC61E0F008A2065 /* Build configuration list for PBXProject "MetalRand" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3408470B2DC61E0F008A2065;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 340847132DC61E0F008A2065 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				340847112DC61E0F008A2065 /* MetalRand */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		340847102DC61E0F008A2065 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		340847172DC61E0F008A2065 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		340847182DC61E0F008A2065 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		3408471A2DC61E0F008A2065 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
+			};
+			name = Debug;
+		};
+		3408471B2DC61E0F008A2065 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3408470F2DC61E0F008A2065 /* Build configuration list for PBXProject "MetalRand" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				340847172DC61E0F008A2065 /* Debug */,
+				340847182DC61E0F008A2065 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		340847192DC61E0F008A2065 /* Build configuration list for PBXNativeTarget "MetalRand" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3408471A2DC61E0F008A2065 /* Debug */,
+				3408471B2DC61E0F008A2065 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3408470C2DC61E0F008A2065 /* Project object */;
+}
