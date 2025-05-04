@@ -11,11 +11,8 @@ import Foundation
 
 struct ContentView: View {
     init () {
-        if let generator = HelloWorldGenerator(),
-           let result = generator.generateHelloWorld() {
-            print("Result from GPU: \(result)")
-        } else {
-            print("Failed to generate Hello World from GPU.")
+        if let rng = MetalRandomNumberGenerator() {
+            rng.generateRandomNumbers()
         }
     }
 
