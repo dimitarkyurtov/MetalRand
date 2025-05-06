@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import MetalKit
+import Security
 
 struct MetalRandomView: NSViewRepresentable {
     func makeCoordinator() -> Coordinator {
@@ -37,8 +38,9 @@ class Coordinator: NSObject, MTKViewDelegate {
     let stateBuffer: MTLBuffer
     let seedBuffer: MTLBuffer
 
-    let width = 512
-    let height = 512
+    var width: Int = 512
+    let height: Int = 512
+    let numberOfColorChannels = 3
 
     init?(_ device: MTLDevice? = MTLCreateSystemDefaultDevice()) {
         guard let device = device,
@@ -48,7 +50,7 @@ class Coordinator: NSObject, MTKViewDelegate {
               let vertexFunction = library.makeFunction(name: "vertex_main"),
               let fragmentFunction = library.makeFunction(name: "fragment_main")
         else { return nil }
-
+        
         self.device = device
         self.commandQueue = commandQueue
 
@@ -72,9 +74,9 @@ class Coordinator: NSObject, MTKViewDelegate {
         }
 
         let stateSize = MemoryLayout<UInt32>.stride * 6
-        stateBuffer = device.makeBuffer(length: width * height * stateSize, options: .storageModeShared)!
+        stateBuffer = device.makeBuffer(length: width * height * numberOfColorChannels * stateSize, options: .storageModeShared)!
 
-        var seed: UInt32 = 12345
+        var seed: UInt32 = Coordinator.generateHardwareSeed()
         seedBuffer = device.makeBuffer(bytes: &seed, length: MemoryLayout<UInt32>.stride, options: [])!
 
         super.init()
@@ -92,8 +94,9 @@ class Coordinator: NSObject, MTKViewDelegate {
         encoder.setComputePipelineState(setupPipeline)
         encoder.setBuffer(stateBuffer, offset: 0, index: 0)
         encoder.setBuffer(seedBuffer, offset: 0, index: 1)
+        encoder.setBytes(&width, length: MemoryLayout<UInt32>.stride, index: 2)
 
-        let totalThreads = width * height
+        let totalThreads = width * height * numberOfColorChannels
         let threadsPerGrid = MTLSize(width: totalThreads, height: 1, depth: 1)
         let threadsPerThreadgroup = MTLSize(width: min(setupPipeline.threadExecutionWidth, totalThreads), height: 1, depth: 1)
 
@@ -125,4 +128,16 @@ class Coordinator: NSObject, MTKViewDelegate {
     }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
+
+
+    static func generateHardwareSeed() -> UInt32 {
+        var seed: UInt32 = 0
+        let result = SecRandomCopyBytes(kSecRandomDefault, MemoryLayout<UInt32>.size, &seed)
+        if result == errSecSuccess {
+            print("Seed: \(seed)")
+            return seed
+        } else {
+            fatalError("Failed to get hardware random seed.")
+        }
+    }
 }

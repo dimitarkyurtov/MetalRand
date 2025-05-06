@@ -11,7 +11,7 @@ using namespace metal;
 namespace metalrand {
 
     struct XORWOWState {
-        uint x, y, z, w, v, d;
+        uint32_t x, y, z, w, v, d;
     };
 
     class XORWOW {
@@ -41,6 +41,15 @@ namespace metalrand {
         state.v = seed ^ 0xBA77B11E;
         state.d = 362437;
     }
+    
+//    inline void metalRandInit(uint seed, uint sequence, device XORWOWState &state) {
+//        state.x = 5;
+//        state.y = 5;
+//        state.z = 5;
+//        state.w = 5;
+//        state.v = 0;
+//        state.d = 0xFFFFFFFFu;
+//    }
 
     /// Returns a random float in [0, 1)
     inline float metalRand(thread XORWOWState &state) {

@@ -5,9 +5,11 @@ using namespace metal;
 /// Kernel to initialize RNG states.
 kernel void setup_kernel(device metalrand::XORWOWState *states [[buffer(0)]],
                          constant uint &seed [[buffer(1)]],
-                         uint thread_id [[thread_position_in_grid]]) {
-    uint sequence = thread_id;
-    metalrand::metalRandInit(seed, sequence, states[thread_id]);
+                         constant uint &width [[buffer(2)]],
+                         uint2 gid [[thread_position_in_grid]]) {
+
+    uint thread_id = gid.y * width + gid.x;
+    metalRandInit(seed, thread_id, states[thread_id]);
 }
 
 /// Kernel to generate N random numbers.
@@ -27,33 +29,16 @@ kernel void generate_random_numbers(device metalrand::XORWOWState *states [[buff
     states[thread_id] = localState;
 }
 
-
-struct VertexOut {
-    float4 position [[position]];
-    uint2 gid;
-};
-
-vertex VertexOut vertex_main(uint vertexID [[vertex_id]],
-                              constant uint2 &viewportSize [[buffer(0)]]) {
-    float2 positions[3] = {
-        float2(-1.0, -1.0),
-        float2(3.0, -1.0),
-        float2(-1.0, 3.0)
-    };
-
-    float2 screenPos = positions[vertexID] * 0.5 + 0.5;
-    uint2 gid = uint2(screenPos * float2(viewportSize));
-
-    VertexOut out;
-    out.position = float4(positions[vertexID], 0.0, 1.0);
-    out.gid = gid;
-    return out;
+vertex float4 vertex_main(uint vertexID [[vertex_id]]) {
+    float2 pos[3] = { float2(-1, -1), float2(3, -1), float2(-1, 3) };
+    return float4(pos[vertexID], 0, 1);
 }
 
-fragment float4 fragment_main(VertexOut in [[stage_in]],
+fragment float4 fragment_main(float4 position [[position]],
                               device metalrand::XORWOWState *states [[buffer(0)]],
                               constant uint &width [[buffer(1)]]) {
-    uint thread_id = in.gid.y * width + in.gid.x;
+    uint2 gid = uint2(position.xy);
+    uint thread_id = gid.y * width + gid.x;
 
     metalrand::XORWOWState localState = states[thread_id];
     metalrand::XORWOW rng(localState);
