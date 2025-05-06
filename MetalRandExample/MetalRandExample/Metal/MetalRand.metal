@@ -16,10 +16,10 @@ namespace metalrand {
 
     class XORWOW {
         private:
-            device XORWOWState &state;
+            thread XORWOWState &state;
 
         public:
-            XORWOW(device XORWOWState &s) : state(s) {}
+            XORWOW(thread XORWOWState &s) : state(s) {}
 
             uint next() thread {
                 uint t = state.x ^ (state.x >> 2);
@@ -43,7 +43,7 @@ namespace metalrand {
     }
 
     /// Returns a random float in [0, 1)
-    inline float metalRand(device XORWOWState &state) {
+    inline float metalRand(thread XORWOWState &state) {
         XORWOW rng(state);
         return static_cast<float>(rng.next()) / static_cast<float>(0xFFFFFFFFu);
     }

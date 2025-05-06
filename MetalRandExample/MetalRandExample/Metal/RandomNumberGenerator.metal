@@ -15,29 +15,54 @@ kernel void generate_random_numbers(device metalrand::XORWOWState *states [[buff
                                     device float *output [[buffer(1)]],
                                     constant uint &N [[buffer(2)]],
                                     uint thread_id [[thread_position_in_grid]]) {
-
-    metalrand::XORWOW rng(states[thread_id]);
+    
+    thread metalrand::XORWOWState localState = states[thread_id];
+    metalrand::XORWOW rng(localState);
 
     uint base_index = thread_id * N;
     for (uint i = 0; i < N; ++i) {
         output[base_index + i] = static_cast<float>(rng.next()) / static_cast<float>(0xFFFFFFFFu);
     }
+    
+    states[thread_id] = localState;
 }
 
 
-kernel void random_color_kernel(texture2d<float, access::write> outTexture [[texture(0)]],
-                                device metalrand::XORWOWState *states [[buffer(0)]],
-                                uint2 gid [[thread_position_in_grid]]) {
-    
-    if (gid.x >= outTexture.get_width() || gid.y >= outTexture.get_height()) return;
+struct VertexOut {
+    float4 position [[position]];
+    uint2 gid;
+};
 
-    uint thread_id = gid.y * outTexture.get_width() + gid.x;
+vertex VertexOut vertex_main(uint vertexID [[vertex_id]],
+                              constant uint2 &viewportSize [[buffer(0)]]) {
+    float2 positions[3] = {
+        float2(-1.0, -1.0),
+        float2(3.0, -1.0),
+        float2(-1.0, 3.0)
+    };
 
-    metalrand::XORWOW rng(states[thread_id]);
+    float2 screenPos = positions[vertexID] * 0.5 + 0.5;
+    uint2 gid = uint2(screenPos * float2(viewportSize));
 
-    float r = static_cast<float>(rng.next()) / 0xFFFFFFFFu;
-    float g = static_cast<float>(rng.next()) / 0xFFFFFFFFu;
-    float b = static_cast<float>(rng.next()) / 0xFFFFFFFFu;
+    VertexOut out;
+    out.position = float4(positions[vertexID], 0.0, 1.0);
+    out.gid = gid;
+    return out;
+}
 
-    outTexture.write(float4(b, g, r, 1.0), gid);
+fragment float4 fragment_main(VertexOut in [[stage_in]],
+                              device metalrand::XORWOWState *states [[buffer(0)]],
+                              constant uint &width [[buffer(1)]]) {
+    uint thread_id = in.gid.y * width + in.gid.x;
+
+    metalrand::XORWOWState localState = states[thread_id];
+    metalrand::XORWOW rng(localState);
+
+    float r = float(rng.next()) / 0xFFFFFFFFu;
+    float g = float(rng.next()) / 0xFFFFFFFFu;
+    float b = float(rng.next()) / 0xFFFFFFFFu;
+
+    states[thread_id] = localState;
+
+    return float4(r, g, b, 1.0);
 }
