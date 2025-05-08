@@ -33,6 +33,7 @@ namespace metalrand {
             }
     };
 
+    /// Initializes a state with seed and sequence.
     inline void metalRandInit(uint seed, uint sequence, device XORWOWState &state) {
         state.x = seed ^ 0xA341316C ^ sequence;
         state.y = seed ^ 0xC8013EA4 ^ (sequence << 1);
@@ -41,15 +42,6 @@ namespace metalrand {
         state.v = seed ^ 0xBA77B11E;
         state.d = 362437;
     }
-    
-//    inline void metalRandInit(uint seed, uint sequence, device XORWOWState &state) {
-//        state.x = 5;
-//        state.y = 5;
-//        state.z = 5;
-//        state.w = 5;
-//        state.v = 0;
-//        state.d = 0xFFFFFFFFu;
-//    }
 
     /// Returns a random float in [0, 1)
     inline float metalRand(thread XORWOWState &state) {

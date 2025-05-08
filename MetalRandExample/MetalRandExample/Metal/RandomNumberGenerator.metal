@@ -12,28 +12,13 @@ kernel void setup_kernel(device metalrand::XORWOWState *states [[buffer(0)]],
     metalRandInit(seed, thread_id, states[thread_id]);
 }
 
-/// Kernel to generate N random numbers.
-kernel void generate_random_numbers(device metalrand::XORWOWState *states [[buffer(0)]],
-                                    device float *output [[buffer(1)]],
-                                    constant uint &N [[buffer(2)]],
-                                    uint thread_id [[thread_position_in_grid]]) {
-    
-    thread metalrand::XORWOWState localState = states[thread_id];
-    metalrand::XORWOW rng(localState);
-
-    uint base_index = thread_id * N;
-    for (uint i = 0; i < N; ++i) {
-        output[base_index + i] = static_cast<float>(rng.next()) / static_cast<float>(0xFFFFFFFFu);
-    }
-    
-    states[thread_id] = localState;
-}
-
+/// Vertex shader which draws on the whole screen.
 vertex float4 vertex_main(uint vertexID [[vertex_id]]) {
     float2 pos[3] = { float2(-1, -1), float2(3, -1), float2(-1, 3) };
     return float4(pos[vertexID], 0, 1);
 }
 
+/// Fragment shader which generates a random value for each pixel.
 fragment float4 fragment_main(float4 position [[position]],
                               device metalrand::XORWOWState *states [[buffer(0)]],
                               constant uint &width [[buffer(1)]]) {

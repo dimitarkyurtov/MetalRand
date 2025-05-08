@@ -113,11 +113,9 @@ class Coordinator: NSObject, MTKViewDelegate {
               let commandBuffer = commandQueue.makeCommandBuffer(),
               let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
 
-        var viewportSize = vector_uint2(UInt32(width), UInt32(height))
         var widthValue = UInt32(width)
 
         encoder.setRenderPipelineState(renderPipeline)
-        encoder.setVertexBytes(&viewportSize, length: MemoryLayout<vector_uint2>.stride, index: 0)
         encoder.setFragmentBuffer(stateBuffer, offset: 0, index: 0)
         encoder.setFragmentBytes(&widthValue, length: MemoryLayout<UInt32>.stride, index: 1)
         encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
