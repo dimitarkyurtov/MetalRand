@@ -4,7 +4,4 @@
    <FileRef
       location = "container:MetalRandExample/MetalRandExample.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:MetalRand/MetalRand.xcodeproj">
-   </FileRef>
 </Workspace>

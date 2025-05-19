@@ -21,20 +21,6 @@
                ReferencedContainer = "container:MetalRandExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "340847112DC61E0F008A2065"
-               BuildableName = "MetalRand.metallib"
-               BlueprintName = "MetalRand"
-               ReferencedContainer = "container:../MetalRand/MetalRand.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
