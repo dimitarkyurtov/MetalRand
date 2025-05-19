@@ -7,9 +7,13 @@ kernel void setup_kernel(device metalrand::XORWOWState *states [[buffer(0)]],
                          constant uint &seed [[buffer(1)]],
                          constant uint &width [[buffer(2)]],
                          uint2 gid [[thread_position_in_grid]]) {
-
+    
     uint thread_id = gid.y * width + gid.x;
-    metalRandInit(seed, thread_id, states[thread_id]);
+    metalrand::XORWOWState localState = states[thread_id];
+
+    metalRandInit(seed, thread_id, localState);
+
+    states[thread_id] = localState;
 }
 
 /// Vertex shader which draws on the whole screen.
@@ -26,11 +30,10 @@ fragment float4 fragment_main(float4 position [[position]],
     uint thread_id = gid.y * width + gid.x;
 
     metalrand::XORWOWState localState = states[thread_id];
-    metalrand::XORWOW rng(localState);
 
-    float r = float(rng.next()) / 0xFFFFFFFFu;
-    float g = float(rng.next()) / 0xFFFFFFFFu;
-    float b = float(rng.next()) / 0xFFFFFFFFu;
+    float r = float(metalrand::metalRand(localState)) / 0xFFFFFFFFu;
+    float g = float(metalrand::metalRand(localState)) / 0xFFFFFFFFu;
+    float b = float(metalrand::metalRand(localState)) / 0xFFFFFFFFu;
 
     states[thread_id] = localState;
 
