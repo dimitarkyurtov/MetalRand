@@ -34,7 +34,7 @@ namespace metalrand {
         state.v = seed ^ 0xBA77B11E;
         state.d = 362437;
         
-        for (int i = 0; i < 10; i ++) {
+        for (uint i = 0; i < sequence; i ++) {
             metalrand::metalRand(state);
         }
     }
@@ -56,7 +56,7 @@ namespace metalrand {
     inline void metalRandInit(uint seed, uint sequence, thread SplitMix32State &state) {
         state.x = seed + sequence * 0x9E3779B9;
         
-        for (int i = 0; i < 10; i ++) {
+        for (uint i = 0; i < sequence; i ++) {
             metalrand::metalRand(state);
         }
     }
@@ -86,7 +86,7 @@ namespace metalrand {
         state.s0 = metalRand(sm);
         state.s1 = metalRand(sm);
         
-        for (int i = 0; i < 10; i ++) {
+        for (uint i = 0; i < sequence; i ++) {
             metalrand::metalRand(state);
         }
     }
