@@ -1,7 +1,3 @@
-# MetalRand
-
----
-
 ## Introduction
 
 Random number generation is an important part of computing, used across a broad range of fields - for example cryptography, simulations, procedural content generation, and graphics. Random numbers can be categorized into two main types: **true random numbers**, which are derived from physical sources of entropy (like electrical noise, nuclear atoms decay, etc.), and **pseudo-random numbers**, which are generated algorithmically/deterministically and preserve properties of true random numbers. While true random number generation offers high entropy, pseudo-random number generators (PRNGs) are often used due to their speed and reproducibility. PRNGs can be generated with software while true random numbers require a specialized hardware.
@@ -34,9 +30,9 @@ MetalRand is implemented as a single `.metal` file, making it easy to include an
 
 ### Algorithms Supported
 
-- **XORWOW**: A commonly used PRNG offering good performance and statistical properties.
-- **SplitMix32**: A lightweight, fast PRNG with decent randomness.
-- **Xoroshiro32**: A variant of the xoroshiro family optimized for 32-bit output.
+- **XORWOW**: variation of the Xorshift family of generators with an added Weyl sequence component to improve its period and statistical properties. It operates using a series of XOR and bit-shift operations on multiple 32-bit state values. The algorithm offers a very long period (~2^192) and is known for being both fast and statistically robust.
+- **SplitMix32**: non-cryptographic PRNG algorithm without a high quality of randomness. It works by incrementing a counter and transforming it through a sequence of bit shifts and multiplications. While it’s not suitable for security-sensitive applications, it performs well for internal PRNG.
+- **Xoroshiro32**: based on the Xoroshiro family, optimized for 32-bit output. It combines XOR and rotation operations on a small internal state to produce high-quality pseudo-random numbers. Xoroshiro generators are known for their balance between speed and randomness quality.
 
 Each algorithm has an associated `State` structure, which maintains the internal state required to generate the next random number.
 
